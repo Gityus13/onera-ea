@@ -207,8 +207,8 @@
 
     <script src="https://accounts.google.com/gsi/client" async defer></script>
     <script>
-        // Get Google Client ID from environment or set here
-        const GOOGLE_CLIENT_ID = 'YOUR_GOOGLE_CLIENT_ID.apps.googleusercontent.com'; // REPLACE WITH YOUR ACTUAL CLIENT ID
+        // Your actual Google Client ID
+        const GOOGLE_CLIENT_ID = '694900292532-t534496odje7ot95fca2rvhpqqe5vr00.apps.googleusercontent.com';
         
         let currentUser = null;
 
@@ -242,36 +242,58 @@
 
         // Google Sign-In
         function initializeGoogleSignIn() {
-            if (GOOGLE_CLIENT_ID === 'YOUR_GOOGLE_CLIENT_ID.apps.googleusercontent.com') {
-                console.warn('Please configure your Google Client ID');
+            // Check if Google SDK is loaded
+            if (typeof google === 'undefined' || !google.accounts) {
+                console.error('Google SDK not loaded yet');
+                setTimeout(initializeGoogleSignIn, 500);
                 return;
             }
             
-            google.accounts.id.initialize({
-                client_id: GOOGLE_CLIENT_ID,
-                callback: handleGoogleCredentialResponse,
-                auto_select: false,
-                cancel_on_tap_outside: true
-            });
-            
-            google.accounts.id.renderButton(
-                document.getElementById('googleSignIn'),
-                { theme: 'outline', size: 'large', width: '100%' }
-            );
+            try {
+                google.accounts.id.initialize({
+                    client_id: GOOGLE_CLIENT_ID,
+                    callback: handleGoogleCredentialResponse,
+                    auto_select: false,
+                    cancel_on_tap_outside: true
+                });
+                
+                // Render the button
+                google.accounts.id.renderButton(
+                    document.getElementById('googleSignIn'),
+                    { 
+                        theme: 'outline', 
+                        size: 'large', 
+                        width: '100%',
+                        text: 'continue_with',
+                        shape: 'rectangular',
+                        logo_alignment: 'left'
+                    }
+                );
+                
+                console.log('Google Sign-In initialized successfully');
+            } catch (error) {
+                console.error('Error initializing Google Sign-In:', error);
+                showError('Failed to initialize Google Sign-In. Please refresh the page.');
+            }
         }
 
         function handleGoogleCredentialResponse(response) {
-            // Decode JWT token to get user info
-            const userObject = parseJwt(response.credential);
-            const userData = {
-                id: userObject.sub,
-                name: userObject.name,
-                email: userObject.email,
-                picture: userObject.picture,
-                provider: 'google',
-                loginTime: new Date().toISOString()
-            };
-            saveUser(userData);
+            try {
+                // Decode JWT token to get user info
+                const userObject = parseJwt(response.credential);
+                const userData = {
+                    id: userObject.sub,
+                    name: userObject.name,
+                    email: userObject.email,
+                    picture: userObject.picture,
+                    provider: 'google',
+                    loginTime: new Date().toISOString()
+                };
+                saveUser(userData);
+            } catch (error) {
+                console.error('Error handling Google response:', error);
+                showError('Authentication failed. Please try again.');
+            }
         }
 
         function parseJwt(token) {
@@ -283,22 +305,14 @@
             return JSON.parse(jsonPayload);
         }
 
-        // Apple Sign-In
+        // Apple Sign-In (requires Apple Developer account)
         function initializeAppleSignIn() {
             const appleBtn = document.getElementById('appleSignIn');
-            appleBtn.addEventListener('click', () => {
-                // For Apple Sign-In, you need to set up Apple Developer account
-                // This is a simplified version - production requires Apple's JS SDK
-                showError('Apple Sign-In requires developer setup. Please use Google Sign-In for now.');
-                
-                // In production with proper setup, you would use:
-                // AppleID.auth.init({
-                //     clientId: 'com.your.app',
-                //     scope: 'name email',
-                //     redirectURI: window.location.origin + '/login.html',
-                //     usePopup: true
-                // });
-            });
+            if (appleBtn) {
+                appleBtn.addEventListener('click', () => {
+                    showError('Apple Sign-In requires an Apple Developer account. Please use Google Sign-In for now.');
+                });
+            }
         }
 
         function continueAsGuest() {
@@ -314,19 +328,11 @@
             saveUser(guestUser);
         }
 
-        // Initialize
-        checkExistingLogin();
-        
-        if (GOOGLE_CLIENT_ID !== '694900292532-t534496odje7ot95fca2rvhpqqe5vr00.apps.googleusercontent.com') {
+        // Wait for DOM to load
+        document.addEventListener('DOMContentLoaded', () => {
+            checkExistingLogin();
             initializeGoogleSignIn();
-        }
-        initializeAppleSignIn();
-        
-        // Handle manual button clicks if Google SDK fails
-        document.getElementById('googleSignIn').addEventListener('click', () => {
-            if (GOOGLE_CLIENT_ID === 'YOUR_GOOGLE_CLIENT_ID.apps.googleusercontent.com') {
-                showError('Please configure Google Client ID in the code');
-            }
+            initializeAppleSignIn();
         });
     </script>
 </body>
