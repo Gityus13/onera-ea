@@ -27,13 +27,45 @@
     }
     *, *::before, *::after { margin: 0; padding: 0; box-sizing: border-box; }
     html { scroll-behavior: smooth; font-size: 16px; }
-    body {
+        body {
       background: var(--bg);
       color: var(--text);
-      font-family: 'Barlow', sans-serif;
+      font-family: 'Barlow', 'Barlow AZ', 'Segoe UI', 'Arial', sans-serif;
       overflow-x: hidden;
+      font-size: 16px;
+      line-height: 1.5;
     }
 
+        /* FIX FOR AZERBAIJANI CHARACTER "ə" - Proper font rendering */
+    @font-face {
+      font-family: 'Barlow AZ';
+      src: local('Barlow'), local('Barlow Regular'), local('Barlow-Medium'), local('Barlow-SemiBold');
+      font-weight: normal;
+      font-style: normal;
+      font-display: swap;
+    }
+
+    /* Force proper character rendering for all text */
+    html, body, button, input, textarea, select, a, p, span, div, h1, h2, h3, h4, h5, h6, li, 
+    .nav-links a, .service-title, .why-card-title, .contact-label, .stat-label, 
+    .hero-tag, .hero-subtitle, .hero-desc, .section-tag, .mission-quote, 
+    .adv-text, .service-desc, .why-card-text, .dropdown-item, .dropdown-user-name, 
+    .dropdown-user-email, .btn-primary, .btn-secondary, .lang-btn, .user-name {
+      font-family: 'Barlow', 'Barlow AZ', 'Segoe UI', 'Arial', 'Helvetica Neue', sans-serif;
+      font-variant-ligatures: normal;
+      font-feature-settings: "kern" 1, "liga" 0;
+      text-rendering: optimizeLegibility;
+      -webkit-font-smoothing: antialiased;
+      -moz-osx-font-smoothing: grayscale;
+    }
+
+    /* Ensure specific elements using Barlow Condensed also get proper rendering */
+    .nav-links a, .hero-tag, .hero-subtitle, .section-tag, .service-title, 
+    .why-card-title, .contact-label, .stat-label, .lang-btn, .btn-primary, .btn-secondary,
+    .mission-quote, .dropdown-item {
+      font-family: 'Barlow Condensed', 'Barlow', 'Barlow AZ', 'Segoe UI', 'Arial', sans-serif !important;
+    }
+    
     /* Noise overlay */
     body::before {
       content: '';
@@ -402,6 +434,7 @@
       letter-spacing: 0.02em;
       color: var(--text);
       margin-bottom: 0.2em;
+      font-weight: normal;
     }
     .hero-title .gold { color: var(--accent); }
     .hero-subtitle {
@@ -532,6 +565,7 @@
       line-height: 1.1;
       letter-spacing: 0.03em;
       margin-bottom: 1.5rem;
+      font-weight: normal;
     }
     .section-title em { color: var(--accent); font-style: normal; }
 
@@ -985,6 +1019,17 @@
       footer { flex-direction: column; text-align: center; }
       .footer-left { justify-content: center; }
       .footer-links { justify-content: center; }
+    }
+  
+    /* AZERBAIJANI LANGUAGE SPECIFIC FIXES - ADD THIS AT THE END */
+    [data-i18n] {
+      font-kerning: normal;
+      font-variant-numeric: normal;
+    }
+
+    /* Ensure ə character renders at same size as other letters */
+    p, span, div, li, a, button, .adv-text, .service-desc, .why-card-text, .hero-desc {
+      font-size-adjust: 0.5;
     }
   </style>
 </head>
