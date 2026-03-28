@@ -180,6 +180,180 @@
     body { transition: background-color 0.3s ease, color 0.3s ease; }
     * { transition: background-color 0.2s ease, border-color 0.2s ease, color 0.2s ease; }
 
+    /* User Menu Styles - Added without breaking existing layout */
+    .user-menu {
+      position: relative;
+      cursor: pointer;
+    }
+    .user-info {
+      display: flex;
+      align-items: center;
+      gap: 8px;
+      padding: 5px 10px;
+      border-radius: 40px;
+      transition: all 0.3s;
+      background: rgba(200,169,110,0.05);
+      border: 1px solid var(--border);
+    }
+    .user-info:hover {
+      background: rgba(200,169,110,0.1);
+      border-color: var(--accent);
+    }
+    .user-avatar {
+      width: 28px;
+      height: 28px;
+      border-radius: 50%;
+      object-fit: cover;
+    }
+    .user-avatar-placeholder {
+      width: 28px;
+      height: 28px;
+      border-radius: 50%;
+      background: var(--accent);
+      color: #0a0a0a;
+      display: flex;
+      align-items: center;
+      justify-content: center;
+      font-weight: 600;
+      font-size: 12px;
+    }
+    .user-name {
+      font-family: 'Barlow Condensed', sans-serif;
+      font-size: 0.8rem;
+      letter-spacing: 0.05em;
+      color: var(--text);
+      max-width: 90px;
+      overflow: hidden;
+      text-overflow: ellipsis;
+      white-space: nowrap;
+    }
+    .dropdown-arrow {
+      transition: transform 0.3s;
+    }
+    .user-menu .show .dropdown-arrow {
+      transform: rotate(180deg);
+    }
+    .dropdown-menu {
+      position: absolute;
+      top: calc(100% + 8px);
+      right: 0;
+      min-width: 250px;
+      background: var(--surface);
+      border: 1px solid var(--border);
+      border-radius: 12px;
+      box-shadow: 0 10px 25px rgba(0,0,0,0.2);
+      opacity: 0;
+      visibility: hidden;
+      transform: translateY(-10px);
+      transition: all 0.3s;
+      z-index: 1000;
+    }
+    .dropdown-menu.show {
+      opacity: 1;
+      visibility: visible;
+      transform: translateY(0);
+    }
+    .dropdown-header {
+      padding: 14px;
+      display: flex;
+      gap: 12px;
+      border-bottom: 1px solid var(--border);
+    }
+    .dropdown-avatar {
+      width: 44px;
+      height: 44px;
+      border-radius: 50%;
+      object-fit: cover;
+    }
+    .dropdown-avatar-placeholder {
+      width: 44px;
+      height: 44px;
+      border-radius: 50%;
+      background: var(--accent);
+      color: #0a0a0a;
+      display: flex;
+      align-items: center;
+      justify-content: center;
+      font-size: 16px;
+      font-weight: 600;
+    }
+    .dropdown-user-info {
+      flex: 1;
+    }
+    .dropdown-user-name {
+      font-weight: 600;
+      font-size: 0.9rem;
+      color: var(--text);
+      margin-bottom: 4px;
+    }
+    .dropdown-user-email {
+      font-size: 0.7rem;
+      color: var(--text-dim);
+    }
+    .dropdown-user-guest {
+      font-size: 0.65rem;
+      color: var(--accent);
+      margin-top: 4px;
+    }
+    .dropdown-divider {
+      height: 1px;
+      background: var(--border);
+      margin: 8px 0;
+    }
+    .dropdown-item {
+      display: flex;
+      align-items: center;
+      gap: 12px;
+      padding: 10px 14px;
+      color: var(--text-dim);
+      text-decoration: none;
+      transition: all 0.3s;
+      font-size: 0.8rem;
+    }
+    .dropdown-item:hover {
+      background: rgba(200,169,110,0.05);
+      color: var(--accent);
+    }
+    .login-btn {
+      display: flex;
+      align-items: center;
+      gap: 6px;
+      padding: 5px 12px;
+      border-radius: 40px;
+      background: rgba(200,169,110,0.1);
+      border: 1px solid var(--border);
+      color: var(--text);
+      text-decoration: none;
+      font-family: 'Barlow Condensed', sans-serif;
+      font-size: 0.75rem;
+      letter-spacing: 0.1em;
+      transition: all 0.3s;
+      white-space: nowrap;
+    }
+    .login-btn:hover {
+      background: rgba(200,169,110,0.2);
+      border-color: var(--accent);
+      color: var(--accent);
+    }
+    @media (max-width: 768px) {
+      .user-name { display: none; }
+      .dropdown-menu { right: -20px; min-width: 220px; }
+      .user-info { padding: 5px 8px; }
+      .login-btn span { display: inline-block; }
+    }
+    @media (max-width: 480px) {
+      .login-btn span { display: none; }
+      .login-btn { padding: 5px 8px; }
+    }
+    @keyframes slideIn {
+      from { transform: translateX(100%); opacity: 0; }
+      to { transform: translateX(0); opacity: 1; }
+    }
+    @keyframes slideOut {
+      from { transform: translateX(0); opacity: 1; }
+      to { transform: translateX(100%); opacity: 0; }
+    }
+
     /* HERO */
     #hero {
       min-height: 100vh;
@@ -830,6 +1004,9 @@
     <li><a href="#contact" data-i18n="nav_contact">Əlaqə</a></li>
   </ul>
   <div style="display:flex;align-items:center;gap:1rem;">
+    <!-- User Menu Container -->
+    <div id="userMenuContainer"></div>
+    
     <div class="lang-switcher">
       <button class="lang-btn active" data-lang="az">AZ</button>
       <button class="lang-btn" data-lang="en">EN</button>
@@ -1055,7 +1232,7 @@
   </div>
 </section>
 
-<!-- FOOTER - FIXED VERSION -->
+<!-- FOOTER -->
 <footer>
   <div class="footer-left">
     <img src="logo.png" alt="ONERA EA" class="footer-logo-img">
@@ -1311,41 +1488,25 @@ function submitForm() {
 
 // ==================== DARK/LIGHT MODE ====================
 function initTheme() {
-  // Check for saved theme preference
   const savedTheme = localStorage.getItem('theme');
   
   if (savedTheme === 'light') {
-    // User chose light mode
     document.body.classList.add('light-mode');
     updateThemeUI(true);
   } else if (savedTheme === 'dark') {
-    // User chose dark mode
     document.body.classList.remove('light-mode');
     updateThemeUI(false);
   } else {
-    // DEFAULT: DARK MODE (first time visitor)
     document.body.classList.remove('light-mode');
     updateThemeUI(false);
-    // Save dark mode as default preference
     localStorage.setItem('theme', 'dark');
   }
 }
 
 function updateThemeUI(isLightMode) {
   const themeTexts = document.querySelectorAll('#themeText, #mobileThemeText');
-  const toggleButtons = document.querySelectorAll('.theme-toggle');
-  
   themeTexts.forEach(text => {
     text.textContent = isLightMode ? 'Dark' : 'Light';
-  });
-  
-  // Update button icons visibility
-  toggleButtons.forEach(btn => {
-    if (isLightMode) {
-      btn.classList.add('light-active');
-    } else {
-      btn.classList.remove('light-active');
-    }
   });
 }
 
@@ -1353,30 +1514,117 @@ function toggleTheme() {
   const isLightMode = document.body.classList.contains('light-mode');
   
   if (isLightMode) {
-    // Switch to dark mode
     document.body.classList.remove('light-mode');
     localStorage.setItem('theme', 'dark');
     updateThemeUI(false);
   } else {
-    // Switch to light mode
     document.body.classList.add('light-mode');
     localStorage.setItem('theme', 'light');
     updateThemeUI(true);
   }
 }
 
-// Add event listeners to theme toggle buttons
 const themeToggleBtns = document.querySelectorAll('#themeToggle, #mobileThemeToggle');
 themeToggleBtns.forEach(btn => {
   btn.addEventListener('click', toggleTheme);
 });
 
-// Initialize theme on page load
-initTheme();
-document.querySelectorAll('#themeToggle, #mobileThemeToggle').forEach(btn => btn.addEventListener('click', toggleTheme));
 initTheme();
 buildGallery();
 setLang('az');
+
+// ==================== USER AUTHENTICATION SYSTEM ====================
+let currentUser = null;
+
+function initUserAuth() {
+    const savedUser = localStorage.getItem('onera_user');
+    if (savedUser) {
+        currentUser = JSON.parse(savedUser);
+        updateUserUI();
+    } else {
+        updateUserUI();
+    }
+}
+
+function updateUserUI() {
+    const userMenuContainer = document.getElementById('userMenuContainer');
+    if (!userMenuContainer) return;
+    
+    if (currentUser) {
+        const isGuest = currentUser.isGuest || currentUser.provider === 'guest';
+        const userName = currentUser.name || (isGuest ? 'Guest' : 'User');
+        const userInitial = userName.charAt(0).toUpperCase();
+        const userPhoto = currentUser.picture;
+        
+        userMenuContainer.innerHTML = `
+            <div class="user-menu" id="userMenu">
+                <div class="user-info" onclick="toggleUserDropdown(event)">
+                    ${userPhoto ? 
+                        `<img src="${userPhoto}" alt="${userName}" class="user-avatar">` : 
+                        `<div class="user-avatar-placeholder">${userInitial}</div>`
+                    }
+                    <span class="user-name">${userName.length > 10 ? userName.substring(0, 8) + '...' : userName}</span>
+                    <svg class="dropdown-arrow" width="10" height="10" viewBox="0 0 12 12" fill="none">
+                        <path d="M3 4.5L6 7.5L9 4.5" stroke="currentColor" stroke-width="1.5"/>
+                    </svg>
+                </div>
+                <div class="dropdown-menu" id="userDropdown">
+                    <div class="dropdown-header">
+                        ${userPhoto ? 
+                            `<img src="${userPhoto}" alt="${userName}" class="dropdown-avatar">` : 
+                            `<div class="dropdown-avatar-placeholder">${userInitial}</div>`
+                        }
+                        <div class="dropdown-user-info">
+                            <div class="dropdown-user-name">${userName}</div>
+                            ${currentUser.email ? `<div class="dropdown-user-email">${currentUser.email}</div>` : ''}
+                            ${isGuest ? `<div class="dropdown-user-guest">Guest Mode</div>` : ''}
+                        </div>
+                    </div>
+                    <div class="dropdown-divider"></div>
+                    <a href="#" class="dropdown-item" onclick="logoutUser(); return false;">
+                        <svg width="14" height="14" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2">
+                            <path d="M9 21H5a2 2 0 0 1-2-2V5a2 2 0 0 1 2-2h4M16 17l5-5-5-5M21 12H9"/>
+                        </svg>
+                        Sign Out
+                    </a>
+                </div>
+            </div>
+        `;
+        
+        document.addEventListener('click', function(event) {
+            const userMenu = document.getElementById('userMenu');
+            if (userMenu && !userMenu.contains(event.target)) {
+                const dropdown = document.getElementById('userDropdown');
+                if (dropdown) dropdown.classList.remove('show');
+            }
+        });
+    } else {
+        userMenuContainer.innerHTML = `
+            <a href="login.html" class="login-btn">
+                <svg width="14" height="14" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2">
+                    <path d="M15 3h4a2 2 0 0 1 2 2v14a2 2 0 0 1-2 2h-4M10 17l5-5-5-5M15 12H3"/>
+                </svg>
+                <span>Sign In</span>
+            </a>
+        `;
+    }
+}
+
+function toggleUserDropdown(event) {
+    event.stopPropagation();
+    const dropdown = document.getElementById('userDropdown');
+    if (dropdown) {
+        dropdown.classList.toggle('show');
+    }
+}
+
+function logoutUser() {
+    localStorage.removeItem('onera_user');
+    currentUser = null;
+    updateUserUI();
+}
+
+initUserAuth();
 </script>
 </body>
 </html>
