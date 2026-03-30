@@ -1,0 +1,451 @@
+<!DOCTYPE html>
+<html lang="az">
+<head>
+  <meta charset="UTF-8">
+  <meta name="viewport" content="width=device-width, initial-scale=1.0, viewport-fit=cover">
+  <meta name="theme-color" content="#0a0a0a">
+  <title>ONERA EA | Təşəkkürlər - Thank You</title>
+  <link rel="icon" type="image/png" href="https://i.ibb.co/5g5yr2pZ/logo.png">
+  <link rel="preconnect" href="https://fonts.googleapis.com">
+  <link rel="preconnect" href="https://fonts.gstatic.com" crossorigin>
+  <link href="https://fonts.googleapis.com/css2?family=Bebas+Neue&family=Barlow:wght@300;400;500;600&family=Barlow+Condensed:wght@400;600;700&display=swap" rel="stylesheet">
+  <style>
+    * {
+      margin: 0;
+      padding: 0;
+      box-sizing: border-box;
+    }
+
+    :root {
+      --bg: #0a0a0a;
+      --surface: #111111;
+      --surface2: #181818;
+      --accent: #c8a96e;
+      --accent2: #e8c98e;
+      --text: #f0ece4;
+      --text-dim: #8a8580;
+      --border: rgba(200, 169, 110, 0.2);
+    }
+
+    body.light-mode {
+      --bg: #f5f3ef;
+      --surface: #ffffff;
+      --surface2: #f8f6f2;
+      --accent: #b8860b;
+      --accent2: #d4af37;
+      --text: #1e2a2e;
+      --text-dim: #4a5b5e;
+      --border: rgba(184, 134, 11, 0.2);
+    }
+
+    body {
+      background: var(--bg);
+      color: var(--text);
+      font-family: 'Barlow', sans-serif;
+      min-height: 100vh;
+      transition: background 0.3s ease, color 0.3s ease;
+    }
+
+    /* Noise Overlay */
+    body::before {
+      content: '';
+      position: fixed;
+      inset: 0;
+      background-image: url("data:image/svg+xml,%3Csvg viewBox='0 0 256 256' xmlns='http://www.w3.org/2000/svg'%3E%3Cfilter id='n'%3E%3CfeTurbulence type='fractalNoise' baseFrequency='0.9' numOctaves='4' stitchTiles='stitch'/%3E%3C/filter%3E%3Crect width='100%25' height='100%25' filter='url(%23n)' opacity='0.04'/%3E%3C/svg%3E");
+      pointer-events: none;
+      z-index: 9990;
+      opacity: 0.3;
+    }
+
+    /* Header/Navigation */
+    nav {
+      position: fixed;
+      top: 0;
+      left: 0;
+      right: 0;
+      height: 80px;
+      z-index: 1000;
+      display: flex;
+      align-items: center;
+      justify-content: space-between;
+      padding: 0 5vw;
+      background: rgba(10, 10, 10, 0.92);
+      backdrop-filter: blur(16px);
+      border-bottom: 1px solid var(--border);
+    }
+    body.light-mode nav {
+      background: rgba(255, 255, 255, 0.92);
+    }
+    .nav-logo {
+      font-family: 'Bebas Neue', sans-serif;
+      font-size: clamp(1.5rem, 5vw, 2rem);
+      letter-spacing: 0.08em;
+      color: var(--accent);
+      text-decoration: none;
+    }
+    .nav-logo span { color: var(--text); }
+
+    /* Language Switcher */
+    .lang-switcher {
+      display: flex;
+      gap: 0.5rem;
+      align-items: center;
+    }
+    .lang-btn {
+      background: none;
+      border: 1px solid var(--border);
+      color: var(--text-dim);
+      font-family: 'Barlow Condensed', sans-serif;
+      font-size: 0.75rem;
+      letter-spacing: 0.1em;
+      padding: 4px 10px;
+      cursor: pointer;
+      transition: all 0.25s;
+      border-radius: 2px;
+    }
+    .lang-btn.active, .lang-btn:hover {
+      color: var(--accent);
+      border-color: var(--accent);
+    }
+    .theme-toggle {
+      background: none;
+      border: 1px solid var(--border);
+      color: var(--text-dim);
+      font-family: 'Barlow Condensed', sans-serif;
+      font-size: 0.75rem;
+      letter-spacing: 0.1em;
+      padding: 4px 10px;
+      cursor: pointer;
+      transition: all 0.25s;
+      border-radius: 2px;
+      margin-left: 0.5rem;
+    }
+    .theme-toggle:hover {
+      color: var(--accent);
+      border-color: var(--accent);
+    }
+
+    /* Thank You Container */
+    .thankyou-container {
+      min-height: 100vh;
+      display: flex;
+      align-items: center;
+      justify-content: center;
+      padding: 120px 5vw 5rem;
+    }
+    .thankyou-card {
+      text-align: center;
+      max-width: 600px;
+      width: 100%;
+      padding: 3rem;
+      background: var(--surface);
+      border: 1px solid var(--border);
+      border-radius: 24px;
+      animation: fadeInUp 0.6s ease-out;
+    }
+    @keyframes fadeInUp {
+      from {
+        opacity: 0;
+        transform: translateY(30px);
+      }
+      to {
+        opacity: 1;
+        transform: translateY(0);
+      }
+    }
+    .thankyou-icon {
+      font-size: 4rem;
+      margin-bottom: 1.5rem;
+      animation: bounce 0.8s ease;
+    }
+    @keyframes bounce {
+      0%, 100% { transform: scale(1); }
+      50% { transform: scale(1.1); }
+    }
+    .thankyou-title {
+      font-family: 'Bebas Neue', sans-serif;
+      font-size: 2.5rem;
+      color: var(--accent);
+      margin-bottom: 1rem;
+      letter-spacing: 0.02em;
+    }
+    .thankyou-message {
+      color: var(--text-dim);
+      margin-bottom: 2rem;
+      line-height: 1.6;
+      font-size: 1rem;
+    }
+    .thankyou-submessage {
+      color: var(--text-dim);
+      margin-bottom: 2rem;
+      font-size: 0.85rem;
+      opacity: 0.8;
+    }
+    .back-home-btn {
+      display: inline-flex;
+      align-items: center;
+      gap: 0.75rem;
+      background: var(--accent);
+      color: #0a0a0a;
+      text-decoration: none;
+      font-family: 'Barlow Condensed', sans-serif;
+      font-size: 0.85rem;
+      letter-spacing: 0.2em;
+      text-transform: uppercase;
+      padding: 12px 28px;
+      transition: all 0.3s;
+      border: none;
+      cursor: pointer;
+      border-radius: 2px;
+    }
+    .back-home-btn:hover {
+      background: var(--accent2);
+      transform: translateY(-2px);
+    }
+    .back-home-btn svg {
+      width: 18px;
+      height: 18px;
+      stroke: currentColor;
+      stroke-width: 2;
+    }
+    .contact-info-links {
+      margin-top: 2rem;
+      padding-top: 1.5rem;
+      border-top: 1px solid var(--border);
+      display: flex;
+      justify-content: center;
+      gap: 1.5rem;
+      flex-wrap: wrap;
+    }
+    .contact-info-links a {
+      color: var(--text-dim);
+      text-decoration: none;
+      font-size: 0.8rem;
+      font-family: 'Barlow Condensed', sans-serif;
+      transition: color 0.25s;
+    }
+    .contact-info-links a:hover {
+      color: var(--accent);
+    }
+    footer {
+      padding: 1.5rem 5vw;
+      text-align: center;
+      border-top: 1px solid var(--border);
+      font-size: 0.7rem;
+      color: var(--text-dim);
+    }
+    @media (max-width: 768px) {
+      .thankyou-card { padding: 2rem; margin: 1rem; }
+      .thankyou-title { font-size: 1.8rem; }
+      .lang-switcher { gap: 0.25rem; }
+      .lang-btn { padding: 4px 6px; font-size: 0.65rem; }
+      .theme-toggle { padding: 4px 8px; font-size: 0.65rem; }
+    }
+  </style>
+</head>
+<body>
+
+<nav>
+  <a href="/" class="nav-logo">ONERA <span>EA</span></a>
+  <div style="display: flex; align-items: center; gap: 0.5rem;">
+    <div class="lang-switcher">
+      <button class="lang-btn active" data-lang="az">AZ</button>
+      <button class="lang-btn" data-lang="en">EN</button>
+      <button class="lang-btn" data-lang="ru">RU</button>
+    </div>
+    <button class="theme-toggle" id="themeToggle">🌓</button>
+  </div>
+</nav>
+
+<div class="thankyou-container">
+  <div class="thankyou-card">
+    <div class="thankyou-icon">✅</div>
+    <h1 class="thankyou-title" id="thankyouTitle">Təşəkkürlər!</h1>
+    <p class="thankyou-message" id="thankyouMessage">
+      Mesajınız uğurla göndərildi. Ən qısa zamanda sizinlə əlaqə saxlayacağıq.
+    </p>
+    <p class="thankyou-submessage" id="thankyouSubmessage">
+      Komandamız mesajınızı nəzərdən keçirir.
+    </p>
+    <button class="back-home-btn" id="backHomeBtn">
+      <svg viewBox="0 0 24 24" fill="none">
+        <path d="M3 12H21M3 12L9 6M3 12L9 18" stroke="currentColor" stroke-width="2" stroke-linecap="round"/>
+      </svg>
+      <span id="backBtnText">Ana Səhifəyə Qayıt</span>
+    </button>
+    
+    <div class="contact-info-links">
+      <a href="tel:+994552118331">📞 +994 55 211 83 31</a>
+      <a href="mailto:office@onera-ea.com">✉️ office@onera-ea.com</a>
+    </div>
+  </div>
+</div>
+
+<footer>
+  <span data-i18n="footer">Onera Ea™ LLC 2026. Bütün hüquqlar qorunur.</span>
+</footer>
+
+<script>
+// ==================== TRANSLATIONS ====================
+const translations = {
+  az: {
+    title: "Təşəkkürlər!",
+    message: "Mesajınız uğurla göndərildi. Ən qısa zamanda sizinlə əlaqə saxlayacağıq.",
+    submessage: "Komandamız mesajınızı nəzərdən keçirir.",
+    backBtn: "Ana Səhifəyə Qayıt",
+    footer: "Onera Ea™ LLC 2026. Bütün hüquqlar qorunur."
+  },
+  en: {
+    title: "Thank You!",
+    message: "Your message has been sent successfully. We will contact you shortly.",
+    submessage: "Our team is reviewing your message.",
+    backBtn: "Back to Homepage",
+    footer: "Onera Ea™ LLC 2026. All rights reserved."
+  },
+  ru: {
+    title: "Спасибо!",
+    message: "Ваше сообщение успешно отправлено. Мы свяжемся с вами в ближайшее время.",
+    submessage: "Наша команда рассматривает ваше сообщение.",
+    backBtn: "Вернуться на главную",
+    footer: "Onera Ea™ LLC 2026. Все права защищены."
+  }
+};
+
+// Get language from URL parameter (e.g., ?lang=az or ?lang=en or ?lang=ru)
+function getLangFromUrl() {
+  const urlParams = new URLSearchParams(window.location.search);
+  const langParam = urlParams.get('lang');
+  if (langParam && ['az', 'en', 'ru'].includes(langParam)) {
+    return langParam;
+  }
+  // Check localStorage for saved language
+  const savedLang = localStorage.getItem('onera_lang');
+  if (savedLang && ['az', 'en', 'ru'].includes(savedLang)) {
+    return savedLang;
+  }
+  return 'az';
+}
+
+let currentLang = getLangFromUrl();
+
+function setLanguage(lang) {
+  currentLang = lang;
+  localStorage.setItem('onera_lang', lang);
+  
+  // Update UI text
+  document.getElementById('thankyouTitle').innerHTML = translations[lang].title;
+  document.getElementById('thankyouMessage').innerHTML = translations[lang].message;
+  document.getElementById('thankyouSubmessage').innerHTML = translations[lang].submessage;
+  document.getElementById('backBtnText').innerHTML = translations[lang].backBtn;
+  document.querySelector('[data-i18n="footer"]').innerHTML = translations[lang].footer;
+  
+  // Update active state on language buttons
+  document.querySelectorAll('.lang-btn').forEach(btn => {
+    if (btn.getAttribute('data-lang') === lang) {
+      btn.classList.add('active');
+    } else {
+      btn.classList.remove('active');
+    }
+  });
+  
+  // Update document direction and lang attribute
+  document.documentElement.lang = lang === 'az' ? 'az' : (lang === 'en' ? 'en' : 'ru');
+}
+
+// Initialize language buttons
+document.querySelectorAll('.lang-btn').forEach(btn => {
+  btn.addEventListener('click', () => {
+    const lang = btn.getAttribute('data-lang');
+    setLanguage(lang);
+    // Update URL without reloading (optional)
+    const url = new URL(window.location.href);
+    url.searchParams.set('lang', lang);
+    window.history.replaceState({}, '', url);
+  });
+});
+
+// ==================== DARK/LIGHT MODE ====================
+function initTheme() {
+  const savedTheme = localStorage.getItem('theme');
+  if (savedTheme === 'light') {
+    document.body.classList.add('light-mode');
+    updateThemeUI(true);
+  } else {
+    document.body.classList.remove('light-mode');
+    updateThemeUI(false);
+    if (!savedTheme) localStorage.setItem('theme', 'dark');
+  }
+}
+
+function updateThemeUI(isLightMode) {
+  const themeToggle = document.getElementById('themeToggle');
+  if (themeToggle) {
+    themeToggle.textContent = isLightMode ? '🌙' : '☀️';
+  }
+}
+
+function toggleTheme() {
+  const isLightMode = document.body.classList.contains('light-mode');
+  if (isLightMode) {
+    document.body.classList.remove('light-mode');
+    localStorage.setItem('theme', 'dark');
+    updateThemeUI(false);
+  } else {
+    document.body.classList.add('light-mode');
+    localStorage.setItem('theme', 'light');
+    updateThemeUI(true);
+  }
+}
+
+const themeToggle = document.getElementById('themeToggle');
+if (themeToggle) {
+  themeToggle.addEventListener('click', toggleTheme);
+}
+initTheme();
+
+// ==================== BACK TO HOME BUTTON ====================
+const backHomeBtn = document.getElementById('backHomeBtn');
+if (backHomeBtn) {
+  backHomeBtn.addEventListener('click', () => {
+    // Get the base URL (main site)
+    const baseUrl = window.location.origin;
+    const currentLangParam = `?lang=${currentLang}`;
+    // Redirect to homepage with language parameter
+    window.location.href = `${baseUrl}/${currentLangParam}`;
+  });
+}
+
+// ==================== AUTO-REDIRECT OPTION (5 seconds) ====================
+// Optional: Auto redirect after 5 seconds
+let timeoutId;
+function startAutoRedirect() {
+  timeoutId = setTimeout(() => {
+    const baseUrl = window.location.origin;
+    window.location.href = `${baseUrl}/?lang=${currentLang}`;
+  }, 5000);
+}
+
+function cancelAutoRedirect() {
+  if (timeoutId) clearTimeout(timeoutId);
+}
+
+// Start auto redirect, but cancel if user interacts
+startAutoRedirect();
+document.addEventListener('click', cancelAutoRedirect);
+document.addEventListener('keydown', cancelAutoRedirect);
+
+// ==================== SET LANGUAGE ON PAGE LOAD ====================
+setLanguage(currentLang);
+
+// ==================== CHECK IF FORM WAS SUBMITTED ====================
+// Add a small animation effect to indicate successful submission
+window.addEventListener('load', () => {
+  // Add a subtle confetti effect for celebration (optional simple effect)
+  const icon = document.querySelector('.thankyou-icon');
+  if (icon) {
+    icon.style.animation = 'bounce 0.8s ease';
+  }
+});
+</script>
+</body>
+</html>
