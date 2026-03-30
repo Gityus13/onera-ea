@@ -1255,7 +1255,7 @@ body.light-mode {
   </div>
 </section>
 
-<!-- CONTACT SECTION - WORKING VERSION -->
+<!-- CONTACT SECTION - FIXED WORKING VERSION -->
 <section id="contact">
   <div class="contact-info">
     <div>
@@ -1268,22 +1268,22 @@ body.light-mode {
     <div class="contact-item"><div class="contact-icon-wrap"><svg width="18" height="18" fill="none" viewBox="0 0 24 24" stroke="currentColor" stroke-width="1.5"><path stroke-linecap="round" stroke-linejoin="round" d="M21.75 6.75v10.5a2.25 2.25 0 01-2.25 2.25h-15a2.25 2.25 0 01-2.25-2.25V6.75m19.5 0A2.25 2.25 0 0019.5 4.5h-15a2.25 2.25 0 00-2.25 2.25m19.5 0v.243a2.25 2.25 0 01-1.07 1.916l-7.5 4.615a2.25 2.25 0 01-2.36 0L3.32 8.91a2.25 2.25 0 01-1.07-1.916V6.75"/></svg></div><div><div class="contact-label" data-i18n="con_email">E-poçt</div><div class="contact-value"><a href="mailto:office@onera-ea.com">office@onera-ea.com</a></div></div></div>
   </div>
   
-  <!-- SIMPLE WORKING FORM - NO AJAX -->
+  <!-- WORKING FORM - DIRECT FORM ACTION -->
   <div class="contact-form">
-    <form action="https://formsubmit.co/office@onera-ea.com" method="POST" target="_blank">
+    <form action="https://formsubmit.co/office@onera-ea.com" method="POST" id="contactForm">
       <!-- FormSubmit.co configuration -->
       <input type="hidden" name="_subject" value="ONERA EA - Yeni Mesaj!">
       <input type="hidden" name="_captcha" value="false">
       <input type="hidden" name="_template" value="table">
-      <input type="hidden" name="_next" value="https://onera-ea.com/thankyou>
+      <input type="hidden" name="_next" value="https://onera-ea.com/thanks.html">
       
       <div class="form-field">
         <label>Adınız *</label>
-        <input type="text" name="name" placeholder="Emin Xalidov" required />
+        <input type="text" name="name" placeholder="Adınız soyadınız" required />
       </div>
       <div class="form-field">
         <label>E-poçt *</label>
-        <input type="email" name="email" placeholder="mail@example.com" required />
+        <input type="email" name="email" placeholder="email@example.com" required />
       </div>
       <div class="form-field">
         <label>Telefon</label>
@@ -1297,14 +1297,18 @@ body.light-mode {
         <label>Mesaj *</label>
         <textarea name="message" placeholder="Mesajınızı yazın..." required></textarea>
       </div>
+      
+      <!-- Status message container -->
+      <div id="formStatus" style="display: none; margin-bottom: 15px; padding: 12px; border-radius: 4px; text-align: center;"></div>
+      
       <div class="form-submit">
-        <button class="btn-primary" type="submit">
+        <button class="btn-primary" type="submit" id="submitBtn">
           <span>Göndər</span>
         </button>
       </div>
     </form>
-    <div style="margin-top: 1rem; font-size: 0.8rem; color: var(--text-dim); text-align: center;">
-      Form göndərildikdən sonra yeni səhifə açılacaq.
+    <div style="margin-top: 1rem; font-size: 0.75rem; color: var(--text-dim); text-align: center; opacity: 0.7;">
+      ✓ Mesajınız göndərildikdən sonra təsdiq səhifəsinə yönləndiriləcəksiniz
     </div>
   </div>
 </section>
@@ -1704,116 +1708,99 @@ function logoutUser() {
 initUserAuth();
 
 // ==================== WORKING FORMSUBMIT.CO INTEGRATION ====================
+// This uses the standard form submission (page reload) which is most reliable
+// The form will work without any JavaScript - it's a standard HTML form
+
+// If you want AJAX (no page reload) with fallback, uncomment the code below:
+/*
 const contactForm = document.getElementById('contactForm');
 const submitBtn = document.getElementById('submitBtn');
 const formStatus = document.getElementById('formStatus');
 
 if (contactForm) {
-  // Remove any existing event listeners
-  const newForm = contactForm.cloneNode(true);
-  contactForm.parentNode.replaceChild(newForm, contactForm);
-  
-  const freshForm = document.getElementById('contactForm');
-  const freshBtn = document.getElementById('submitBtn');
-  const freshStatus = document.getElementById('formStatus');
-  
-  freshForm.addEventListener('submit', async function(e) {
+  contactForm.addEventListener('submit', async function(e) {
     e.preventDefault();
     
     // Get form data
-    const name = freshForm.querySelector('[name="name"]').value.trim();
-    const email = freshForm.querySelector('[name="email"]').value.trim();
-    const phone = freshForm.querySelector('[name="phone"]').value.trim();
-    const company = freshForm.querySelector('[name="company"]').value.trim();
-    const message = freshForm.querySelector('[name="message"]').value.trim();
+    const name = contactForm.querySelector('[name="name"]').value.trim();
+    const email = contactForm.querySelector('[name="email"]').value.trim();
+    const phone = contactForm.querySelector('[name="phone"]').value.trim();
+    const company = contactForm.querySelector('[name="company"]').value.trim();
+    const message = contactForm.querySelector('[name="message"]').value.trim();
     
     // Validation
     if (!name || !email || !message) {
-      showFormStatusMessage(freshStatus, 'Xahiş edirik bütün vacib sahələri doldurun! (Ad, E-poçt, Mesaj)', 'error');
+      showFormStatusMessage('Xahiş edirik Ad, E-poçt və Mesaj sahələrini doldurun!', 'error');
       return;
     }
     
-    // Email validation
     const emailRegex = /^[^\s@]+@([^\s@]+\.)+[^\s@]+$/;
     if (!emailRegex.test(email)) {
-      showFormStatusMessage(freshStatus, 'Zəhmət olmasa düzgün e-poçt ünvanı daxil edin!', 'error');
+      showFormStatusMessage('Zəhmət olmasa düzgün e-poçt ünvanı daxil edin!', 'error');
       return;
     }
     
-    // Disable button and show loading
-    freshBtn.disabled = true;
-    freshBtn.style.opacity = '0.6';
-    showFormStatusMessage(freshStatus, 'Göndərilir... Zəhmət olmasa gözləyin...', 'info');
+    // Disable button
+    submitBtn.disabled = true;
+    submitBtn.style.opacity = '0.6';
+    showFormStatusMessage('Göndərilir...', 'info');
     
-    // Create FormData
     const formData = new FormData();
     formData.append('name', name);
     formData.append('email', email);
     formData.append('phone', phone);
     formData.append('company', company);
     formData.append('message', message);
+    formData.append('_subject', 'ONERA EA - Yeni Mesaj!');
+    formData.append('_captcha', 'false');
+    formData.append('_template', 'table');
     
     try {
-      // Send to FormSubmit.co - MAKE SURE TO CHANGE THE EMAIL BELOW
       const response = await fetch('https://formsubmit.co/ajax/office@onera-ea.com', {
         method: 'POST',
         body: formData
       });
       
-      const result = await response.json();
-      console.log('FormSubmit response:', result);
-      
-      if (response.ok && result.success === true) {
-        // Success
-        showFormStatusMessage(freshStatus, '✓ Mesajınız uğurla göndərildi! Tezliklə sizinlə əlaqə saxlayacağıq.', 'success');
-        freshForm.reset();
+      if (response.ok) {
+        showFormStatusMessage('✓ Mesajınız uğurla göndərildi! Tezliklə sizinlə əlaqə saxlayacağıq.', 'success');
+        contactForm.reset();
         
-        // Clear success message after 5 seconds
         setTimeout(() => {
-          if (freshStatus.innerHTML !== '') {
-            freshStatus.style.opacity = '0';
-            setTimeout(() => {
-              freshStatus.innerHTML = '';
-              freshStatus.style.opacity = '1';
-              freshStatus.style.display = 'none';
-            }, 300);
-          }
+          formStatus.style.display = 'none';
         }, 5000);
       } else {
-        throw new Error(result.message || 'Submission failed');
+        throw new Error('Submission failed');
       }
     } catch (error) {
-      console.error('Form submission error:', error);
-      showFormStatusMessage(freshStatus, '❌ Xəta baş verdi. Zəhmət olmasa yenidən cəhd edin və ya bizə zəng edin.', 'error');
+      console.error('Form error:', error);
+      showFormStatusMessage('❌ Xəta baş verdi. Zəhmət olmasa yenidən cəhd edin və ya bizə zəng edin.', 'error');
     } finally {
-      // Re-enable button
-      freshBtn.disabled = false;
-      freshBtn.style.opacity = '1';
+      submitBtn.disabled = false;
+      submitBtn.style.opacity = '1';
     }
   });
 }
 
-function showFormStatusMessage(statusElement, message, type) {
-  statusElement.innerHTML = message;
-  statusElement.style.padding = '12px';
-  statusElement.style.borderRadius = '4px';
-  statusElement.style.textAlign = 'center';
-  statusElement.style.display = 'block';
+function showFormStatusMessage(message, type) {
+  const status = document.getElementById('formStatus');
+  status.style.display = 'block';
+  status.innerHTML = message;
   
   if (type === 'success') {
-    statusElement.style.backgroundColor = 'rgba(72, 187, 120, 0.2)';
-    statusElement.style.color = '#48bb78';
-    statusElement.style.border = '1px solid #48bb78';
+    status.style.backgroundColor = 'rgba(72, 187, 120, 0.2)';
+    status.style.color = '#48bb78';
+    status.style.border = '1px solid #48bb78';
   } else if (type === 'error') {
-    statusElement.style.backgroundColor = 'rgba(245, 101, 101, 0.2)';
-    statusElement.style.color = '#f56565';
-    statusElement.style.border = '1px solid #f56565';
+    status.style.backgroundColor = 'rgba(245, 101, 101, 0.2)';
+    status.style.color = '#f56565';
+    status.style.border = '1px solid #f56565';
   } else if (type === 'info') {
-    statusElement.style.backgroundColor = 'rgba(200, 169, 110, 0.2)';
-    statusElement.style.color = '#c8a96e';
-    statusElement.style.border = '1px solid #c8a96e';
+    status.style.backgroundColor = 'rgba(200, 169, 110, 0.2)';
+    status.style.color = '#c8a96e';
+    status.style.border = '1px solid #c8a96e';
   }
 }
+*/
 </script>
 </body>
 </html>
