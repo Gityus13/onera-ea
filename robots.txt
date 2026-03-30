@@ -1,0 +1,38 @@
+# robots.txt for ONERA EA Website
+# https://onera-ea.com/robots.txt
+
+User-agent: *
+Allow: /
+
+# Allow all crawlers to access all content
+Disallow: 
+
+# Sitemap location
+Sitemap: https://onera-ea.com/sitemap.xml
+
+# Crawl delay to be respectful to server
+Crawl-delay: 1
+
+# Specify clean-param for tracking parameters
+Clean-param: ref / 
+Clean-param: utm_source / 
+Clean-param: utm_medium / 
+Clean-param: utm_campaign / 
+
+# Host directive
+Host: https://onera-ea.com
+
+# Google-specific directives
+User-agent: Googlebot
+Allow: /
+Crawl-delay: 0.5
+
+# Bing-specific directives
+User-agent: Bingbot
+Allow: /
+Crawl-delay: 1
+
+# Yandex-specific directives
+User-agent: Yandex
+Allow: /
+Crawl-delay: 2
