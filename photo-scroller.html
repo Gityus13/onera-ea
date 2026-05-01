@@ -82,34 +82,39 @@
             transform: scale(1.02);
             box-shadow: 0 25px 40px rgba(0, 0, 0, 0.5), 0 0 0 1px rgba(200, 169, 110, 0.3);
         }
+       
+/* Make images fully visible with black bars */
+.image-wrapper {
+    position: relative;
+    width: 100%;
+    aspect-ratio: 16 / 9;
+    overflow: hidden;
+    background: #000;
+}
 
-        /* Image container */
-        .image-wrapper {
-            position: relative;
-            width: 100%;
-            aspect-ratio: 16 / 9;
-            overflow: hidden;
-            background: #000;
-        }
+.image-wrapper img {
+    width: 100%;
+    height: 100%;
+    object-fit: contain;  /* Shows ENTIRE image with black bars */
+    object-position: center center;
+    transition: transform 0.6s cubic-bezier(0.25, 0.46, 0.45, 0.94);
+}
 
-        .image-wrapper img {
-            width: 100%;
-            height: 100%;
-            object-fit: cover;
-            transition: transform 0.6s cubic-bezier(0.25, 0.46, 0.45, 0.94);
-        }
-
-        .slide:hover .image-wrapper img {
-            transform: scale(1.05);
-        }
+.slide:hover .image-wrapper img {
+    transform: scale(1.05);
+}
 
         /* Caption overlay */
         .slide-caption {
-            padding: 20px 24px;
-            background: linear-gradient(135deg, rgba(10, 10, 10, 0.95), rgba(20, 20, 20, 0.95));
-            backdrop-filter: blur(8px);
-            border-top: 1px solid rgba(200, 169, 110, 0.2);
-        }
+    padding: 16px 24px;  /* was 20px 24px - reduce top/bottom */
+    background: linear-gradient(135deg, rgba(10, 10, 10, 0.95), rgba(20, 20, 20, 0.95));
+    backdrop-filter: blur(8px);
+    border-top: 1px solid rgba(200, 169, 110, 0.2);
+}
+
+       .slide-desc {
+    display: none;  /* ← add this to hide descriptions completely even if HTML has them */
+}
 
         .slide-number {
             font-family: 'Barlow Condensed', sans-serif;
@@ -271,6 +276,69 @@
                 height: 18px;
             }
         }
+    /* Lightbox Modal for fullscreen images */
+.modal {
+    display: none;
+    position: fixed;
+    top: 0;
+    left: 0;
+    width: 100%;
+    height: 100%;
+    background: rgba(0, 0, 0, 0.95);
+    z-index: 10000;
+    cursor: pointer;
+    align-items: center;
+    justify-content: center;
+}
+
+.modal.active {
+    display: flex;
+}
+
+.modal img {
+    max-width: 90%;
+    max-height: 90%;
+    object-fit: contain;
+    animation: zoomIn 0.3s ease;
+}
+
+@keyframes zoomIn {
+    from {
+        transform: scale(0.9);
+        opacity: 0;
+    }
+    to {
+        transform: scale(1);
+        opacity: 1;
+    }
+}
+
+.modal-close {
+    position: absolute;
+    top: 20px;
+    right: 30px;
+    font-size: 40px;
+    color: white;
+    cursor: pointer;
+    font-family: Arial, sans-serif;
+    transition: transform 0.2s;
+}
+
+.modal-close:hover {
+    transform: scale(1.2);
+}
+
+.close-hint {
+    position: absolute;
+    bottom: 20px;
+    left: 0;
+    right: 0;
+    text-align: center;
+    color: rgba(255,255,255,0.6);
+    font-family: 'Barlow Condensed', sans-serif;
+    font-size: 0.8rem;
+    letter-spacing: 0.1em;
+}
     </style>
 </head>
 <body>
@@ -300,70 +368,20 @@
 
     <script>
         // ============================================
-        // PHOTO GALLERY DATA - 7 Slides with images
+        // PHOTO GALLERY DATA - 10 Slides with images
         // ============================================
-        const slidesData = [
-            {
-                number: "01",
-                title: "Premium Metal Structures",
-                desc: "High-grade steel reinforcement and structural profiles for industrial construction projects.",
-                image: "image1.png"
-            },
-            {
-                number: "02",
-                title: "Advanced Plumbing Systems",
-                desc: "Durable water supply and sewage pipes with corrosion-resistant technology.",
-                image: "image2.png"
-            },
-            {
-                number: "03",
-                title: "Sanitary & Fittings",
-                desc: "Complete range of sanitary equipment, premium faucets, and installation fittings.",
-                image: "image3.png"
-            },
-            {
-                number: "04",
-                title: "Electrical Infrastructure",
-                desc: "High-performance electrical cables, conduits, and certified wiring solutions.",
-                image: "image4.png"
-            },
-            {
-                number: "05",
-                title: "Construction Hardware",
-                desc: "Essential fasteners, anchoring systems, and professional-grade hardware supplies.",
-                image: "image5.png"
-            },
-            {
-                number: "06",
-                title: "Industrial Raw Materials",
-                desc: "Bulk industrial feedstock and specialty materials for manufacturing excellence.",
-                image: "image6.png"
-            },
-            {
-                number: "07",
-                title: "Complete Supply Chain",
-                desc: "Integrated logistics and just-in-time delivery for major construction projects.",
-                image: "image7.png"
-            },
-            {
-                number: "08",
-                title: "Industrial Raw Materials",
-                desc: "Bulk industrial feedstock and specialty materials for manufacturing excellence.",
-                image: "image8.png"
-            },
-            {
-                number: "09",
-                title: "Industrial Raw Materials",
-                desc: "Bulk industrial feedstock and specialty materials for manufacturing excellence.",
-                image: "image9.png"
-            },
-            {
-                number: "10",
-                title: "Industrial Raw Materials",
-                desc: "Bulk industrial feedstock and specialty materials for manufacturing excellence.",
-                image: "image10.png"
-            }
-        ];
+const slidesData = [
+    { number: "01", title: "Premium Metal Structures", desc: "...", image: "image1.png" },
+    { number: "02", title: "Advanced Plumbing Systems", desc: "...", image: "image2.png" },
+    { number: "03", title: "Sanitary & Fittings", desc: "...", image: "image3.png" },
+    { number: "04", title: "Electrical Infrastructure", desc: "...", image: "image4.png" },
+    { number: "05", title: "Construction Hardware", desc: "...", image: "image5.png" },
+    { number: "06", title: "Industrial Raw Materials", desc: "...", image: "image6.png" },
+    { number: "07", title: "Complete Supply Chain", desc: "...", image: "image7.png" },
+    { number: "08", title: "Custom Fabrication", desc: "...", image: "image8.png" },        // NEW
+    { number: "09", title: "Smart Logistics Hub", desc: "...", image: "image9.png" },       // NEW
+    { number: "10", title: "Quality Assurance Lab", desc: "...", image: "image10.png" }      // NEW
+];
 
         // ============================================
         // DOM Elements
@@ -391,15 +409,15 @@
                 slideDiv.setAttribute('data-index', idx);
                 
                 slideDiv.innerHTML = `
-                    <div class="image-wrapper">
-                        <img src="${slide.image}" alt="${slide.title}" loading="${idx === 0 ? 'eager' : 'lazy'}" onerror="this.src='https://placehold.co/800x450/1a1a1a/c8a96e?text=ONERA+EA+${slide.number}'">
-                    </div>
-                    <div class="slide-caption">
-                        <span class="slide-number">${slide.number} / 07</span>
-                        <h3 class="slide-title">${slide.title}</h3>
-                        <p class="slide-desc">${slide.desc}</p>
-                    </div>
-                `;
+    <div class="image-wrapper">
+        <img src="${slide.image}" alt="${slide.title}" loading="${idx === 0 ? 'eager' : 'lazy'}" onerror="this.src='https://placehold.co/800x450/1a1a1a/c8a96e?text=ONERA+EA+${slide.number}'">
+    </div>
+    <div class="slide-caption">
+        <span class="slide-number">${slide.number} / ${slidesData.length}</span>
+        <h3 class="slide-title">${slide.title}</h3>
+        <!-- description line completely removed -->
+    </div>
+`;
                 
                 track.appendChild(slideDiv);
             });
@@ -643,6 +661,10 @@
             initDragScroll();
             initScrollListener();
             
+            // ADD THESE TWO LINES:
+            addImageClickListeners();  // ← ADD THIS
+            observeImageChanges();      // ← ADD THIS
+            
             // Add click listeners to nav buttons
             prevBtn.addEventListener('click', (e) => {
                 e.stopPropagation();
@@ -681,6 +703,13 @@
         } else {
             init();
         }
-    </script>
+       </script>
+    
+    <!-- Lightbox Modal -->
+    <div id="imageModal" class="modal">
+        <span class="modal-close">&times;</span>
+        <img id="modalImage" src="" alt="Full size image">
+        <div class="close-hint">Click anywhere or press ESC to close</div>
+    </div>
 </body>
 </html>
